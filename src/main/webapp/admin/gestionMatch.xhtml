@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+		<h:form id="frm1">		<p:dialog header="Score"  widgetVar="score" > 
+				<h:panelGrid id="add2" columns="2" >
+				
+					<h:outputText value="Equipe 1 : " />
+					<p:inputText  value="#{matchBean.score.butEquipe1}"/>
+					
+					<h:outputText  value="Equipe 2 : " />
+					<p:inputText  value="#{matchBean.score.butEquipe2}"/>
+					
+					
+				
+					
+			
+					
+					<p:commandButton id="addScore" value="Enregistrer le score" onclick="PF('score').hide()"
+						actionListener="#{matchBean.setScore()}" update=":tab:aMatchs" />
+			
+				</h:panelGrid>
+				</p:dialog></h:form>
+		
+		
+			<h:form id="tab">
+	
+				
+				
+		
+				
+				
+				<h:outputText style="color: #413632;font-size: 1.4em;" value="Gestion match"></h:outputText>
+				<p:dataTable id="aMatchs" var="aMatch" paginatorPosition="bottom"
+					value="#{matchBean.matchList}" draggableColumns="true"
+					paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					
+					<p:column sortBy="#{aMatch.ordre}">
+						<f:facet name="header" >
+							<h:outputText value="N" />
+						</f:facet>
+						<h:outputText value="#{aMatch.ordre}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nom" />
+						</f:facet>
+						<h:outputText value="#{aMatch.libelle}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Equipe1"/>
+						</f:facet>
+						<h:graphicImage value="#{aMatch.equipe1.lienImage}" ></h:graphicImage>
+						<h:outputText value=" #{aMatch.equipe1.libelle}" />
+				
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Equipe2"/>
+						</f:facet>
+						<h:graphicImage value="#{aMatch.equipe2.lienImage}" ></h:graphicImage>
+						<h:outputText value=" #{aMatch.equipe2.libelle}" />
+					</p:column>
+						<p:column headerText="Début"  >
+						<p:calendar id="datetime" value="#{aMatch.debut}" pattern="MM/dd/yyyy HH:mm:ss"   />   
+		
+		</p:column>
+		
+		<p:column>
+						<f:facet name="header">
+							<h:outputText value=" Score"/>
+						</f:facet>
+						<h:outputText value="#{aMatch.score.butEquipe1} - #{aMatch.score.butEquipe2}" />
+						<p:commandButton id="selectButtonScore" 
+ update=":frm1:add2 "  actionListener="#{matchBean.setScoreMatch(aMatch)}" onclick="PF('score').show()" icon="ui-icon-search" title="View"></p:commandButton>   
+						
+					</p:column>
+					
+				
+					
+					<p:column style="width:10%">
+						<f:facet name="header">
+						</f:facet>
+							
+
+  <p:commandButton id="selectButt" update=":tab:aMatchs"  actionListener="#{matchBean.switchEquipe(aMatch)}" icon="ui-icon ui-icon-arrowrefresh-1-s" title="View">  </p:commandButton>
+				
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Enregistrer"
+						actionListener="#{matchBean.enregistrement()}"></p:commandButton>
+						
+			</h:form>
+
+
+ <h:form enctype="multipart/form-data" rendered="#{empty matchBean.matchList}" > 
+ 
+						 <h:inputFile id="file" value="#{matchBean.file}"/>
+  <h:commandButton value="Upload" action="#{matchBean.importMatch}" />
+  
+  </h:form>
+
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

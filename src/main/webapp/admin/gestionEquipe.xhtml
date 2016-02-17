@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+	
+		<h:form id="equipe">
+		
+			
+	
+		
+			
+				<p:dataTable id="data" var="equipe" paginatorPosition="bottom"
+					value="#{equipeBean.equipeList}" draggableColumns="true"
+					paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Id" />
+						</f:facet>
+						<h:outputText value="#{equipe.id}" ></h:outputText>
+					</p:column>
+					
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nom " />
+						</f:facet>
+						<h:outputText value="#{equipe.libelle}" ></h:outputText>
+					</p:column>
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Image" />
+						</f:facet>
+										<h:graphicImage value="#{equipe.lienImage}" ></h:graphicImage>
+						
+					</p:column>
+					
+				
+
+					<p:column style="width:11%">
+						<f:facet name="header"><p:commandButton update=":equipe:add"  actionListener="#{equipeBean.reset}"
+						icon="ui-icon-plusthick" id="showDialogButton" 
+						onclick="PF('dlg').show()" />
+							
+						</f:facet>
+							
+<p:commandButton id="selectButton" update=":equipe:add"  action="#{equipeBean.setEquipe(equipe)}" onclick="PF('dlg').show()" icon="ui-icon-search" title="View"> 
+  </p:commandButton><p:commandButton id="selectButt" update="data"  actionListener="#{equipeBean.deleteEquipe(equipe)}" icon="ui-icon-circle-close" title="View"> 
+  
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				
+					<p:dialog  header="Equipe"  widgetVar="dlg" > 
+				<h:panelGrid id="add" columns="2" >
+				
+					
+					<h:outputLabel for="nom" value="Nom : " />
+					<p:inputText id="nom" value="#{equipeBean.equipe.libelle}"/>
+					
+<h:outputLabel for="nom" value="Lien d'image : " />
+					<p:inputText id="lien" value="#{equipeBean.equipe.lienImage}"/>
+					
+				
+					<div>
+					<p:commandButton onclick="PF('dlg').hide()" id="addequipe" value="Ajouter" 
+						action="#{equipeBean.addEquipe}" update=":equipe:data" />
+						<p:commandButton   onclick="PF('dlg').hide()" id="updateequipe" value="Modifier" 
+						action="#{equipeBean.updateEquipe}" update=":equipe:data" />
+					<p:commandButton value="Reset"  process="@this">
+						<p:resetInput  target=":equipe:add"   />
+
+					</p:commandButton>
+
+					</div>
+				</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+</ui:define>
+</ui:composition>
+</html>

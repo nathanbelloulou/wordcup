@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<body>
+	<ui:composition>
+		<h:form>
+			<f:event listener="#{authBean.isIdentifier}" type="preRenderView" />
+			<p:dialog header="Mon compte" widgetVar="dlgCompte" showEffect="fade"
+				hideEffect="fade">
+				<h:panelGrid columns="2">
+
+					<h:outputLabel for="name" value="Nom : " />
+					<p:inputText disabled="true" id="name" value="#{authBean.utilisateur.nom}" />
+
+					<h:outputLabel for="surname" value="Prénom : " />
+					<p:inputText disabled="true" id="surname" value="#{authBean.utilisateur.prenom}" />
+
+<h:outputLabel for="identi" value="Mot de passe : " />
+					<p:inputText disabled="true" id="identi" value="#{authBean.utilisateur.identifiant}">
+
+					</p:inputText>
+
+					<h:outputLabel for="email" value="Mot de passe : " />
+					<p:inputText id="email" value="#{authBean.utilisateur.motpasse}">
+
+					</p:inputText>
+
+					<h:outputLabel for="email" value="Administrateur: " />
+					<h:selectBooleanCheckbox disabled="true" label="Abilitation"
+						value="#{authBean.utilisateur.abilitationAdministrateur}"></h:selectBooleanCheckbox>
+
+					
+
+					<p:commandButton value="Enregistrer" icon="ui-icon-newwin"></p:commandButton>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		<h:form>
+			<p:blockUI block="menubar" trigger="acceuil" />
+			<p:menubar id="menubar">
+
+				<p:menuitem  value="Accueil" action="accueil" id="acceuil" actionListener="#{accueilBean.setMenuActif('accueil')}" style="#{accueilBean.menuActif=='accueil'?'background:#DEEDF7':''}" />
+
+			
+
+				
+
+				<p:separator rendered="#{authBean.utilisateur.abilitationAdministrateur}"
+					style="background: #A8A8A8; 
+   border: none; 
+   width: 1px; 
+   clear: none; 
+   height: 22px; 
+   margin: 4px 6px 0; 
+   box-shadow: none; "></p:separator>
+
+			<p:menuitem  value="Régle du jeu" action="rdj" id="rdj"  actionListener="#{accueilBean.setMenuActif('rdj')}" style="#{accueilBean.menuActif=='rdj'?'background:#DEEDF7':''}" />
+			
+
+				<p:separator rendered="#{authBean.utilisateur.abilitationAdministrateur}"
+					style="background: #A8A8A8; 
+   border: none; 
+   width: 1px; 
+   clear: none; 
+   height: 22px; 
+   margin: 4px 6px 0; 
+   box-shadow: none; "></p:separator>
+
+				<p:submenu label="Administration"
+					rendered="#{authBean.utilisateur.abilitationAdministrateur}">
+					<p:menuitem value="Gestion utilisateur" action="gestionUtilisateur" />
+					<p:menuitem value="Gestion match" action="gestionMatch" />
+					<p:menuitem value="Gestion équipe" action="gestionEquipe" />
+				</p:submenu>
+
+				<f:facet name="options">
+					<p:commandButton type="button" iconPos="right" value="#{authBean.utilisateur.prenom} #{authBean.utilisateur.nom}"
+						icon="ui-icon-person" onclick="PF('dlgCompte').show()" />
+					<p:commandButton style="margin-left:5px" icon="ui-icon-unlocked"
+						iconPos="right" action="#{authBean.doLogout}"
+						rendered="#{authBean.utilisateur!=null}"></p:commandButton>
+
+				</f:facet>
+
+			</p:menubar>
+
+<p:messages id="messages" showDetail="true" autoUpdate="true" 
+						closable="true" />
+
+		</h:form>
+	</ui:composition>
+</body>
+</html>
+
+

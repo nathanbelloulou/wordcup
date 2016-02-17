@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+    http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+  	
+  	<!-- JSF and Spring are integrated -->
+  	<application>
+    	<el-resolver>
+    		org.springframework.web.jsf.el.SpringBeanFacesELResolver
+    	</el-resolver>
+  	</application>
+	
+    <navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>loginSuccess</from-outcome>
+			<to-view-id>/accueil.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>loginRetry</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>error</from-outcome>
+			<to-view-id>/error.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>logoutSuccess</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>accueil</from-outcome>
+			<to-view-id>/accueil.xhtml</to-view-id>
+		<redirect />
+		</navigation-case>
+		
+			<navigation-case>
+			<from-outcome>rdj</from-outcome>
+			<to-view-id>/rdj.xhtml</to-view-id>
+		<redirect />
+		</navigation-case>
+		
+		
+		<navigation-case>
+			<from-outcome>gestionUtilisateur</from-outcome>
+			<to-view-id>/admin/gestionUtilisateur.xhtml</to-view-id>
+	<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestionMatch</from-outcome>
+			<to-view-id>/admin/gestionMatch.xhtml</to-view-id>
+	<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestionEquipe</from-outcome>
+			<to-view-id>/admin/gestionEquipe.xhtml</to-view-id>
+	<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<managed-bean>
+		<managed-bean-name>currentDate</managed-bean-name>
+		<managed-bean-class>java.util.Date</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+    
+    <lifecycle>
+		<phase-listener>com.adif.utils.LoginPhaseListener</phase-listener>
+	</lifecycle>
+
+<!-- 	<factory> -->
+<!-- 		<exception-handler-factory>fr.oseo.com.bcp.exception.CustomExceptionHandlerFact</exception-handler-factory> -->
+<!-- 	</factory> -->
+    
+</faces-config>

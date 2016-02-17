@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+
+	<ui:composition template="template/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="frm">
+
+				<p:panel header="Prochain match de la coupe du monde "
+					style="margin-bottom: 10px;"
+					rendered="#{!authBean.utilisateur.abilitationAdministrateur}">
+						
+					<p:dataTable value="#{accueilBean.parisUtilisateur}" var="pari"
+						paginatorPosition="bottom" draggableColumns="true"
+						paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+						<p:column headerText="Match" sortBy="#{pari.matchs.equipe1.groupe.libelle}">
+							<h:outputText value="#{pari.matchs.libelle} " />
+						</p:column>
+					
+
+						<p:column headerText="Equipe1" sortBy="#{pari.matchs.equipe1.libelle}">
+							<h:graphicImage value="#{pari.matchs.equipe1.lienImage}"></h:graphicImage>
+							<h:outputText value=" #{pari.matchs.equipe1.libelle}" />
+						</p:column>
+						<p:column headerText="Equipe2" sortBy="#{pari.matchs.equipe2.libelle}">
+							<h:graphicImage value="#{pari.matchs.equipe2.lienImage}"></h:graphicImage>
+							<h:outputText value=" #{pari.matchs.equipe2.libelle}" />
+						</p:column>
+						<p:column headerText="Début" >
+							<h:outputText value="#{pari.matchs.debut}">
+								<f:convertDateTime pattern="d-M-yyyy H:mm" />
+							</h:outputText>
+
+						</p:column>
+						<p:column headerText="Resultat" width="5%">
+							<h:outputText value="#{pari.matchs.score.butEquipe1} - " rendered="#{not empty pari.matchs.score}" />
+							<h:outputText value="#{pari.matchs.score.butEquipe2}" />
+						</p:column>
+
+						<p:column headerText="Pari" width="10%">
+							<p:inputText size="1" value="#{pari.score.butEquipe1}"
+								disabled="#{accueilBean.comp(pari.matchs.debut,currentDate) or not empty pari.matchs.score }"></p:inputText>
+							<p:inputText size="1" value="#{pari.score.butEquipe2}"
+								disabled="#{accueilBean.comp(pari.matchs.debut,currentDate)or not empty pari.matchs.score }"></p:inputText>
+						</p:column>
+
+						<p:column headerText="Gagnant" width="5%">
+							<h:outputText  value="#{pari.pointGagnant}" rendered="#{not empty pari.matchs.score}"></h:outputText>
+
+						</p:column>
+						<p:column headerText="Diff" width="5%">
+							<h:outputText  value="#{pari.pointDiff}" rendered="#{not empty pari.matchs.score}"></h:outputText>
+
+						</p:column>
+						<p:column width="5%">
+							<f:facet name="header"><h:outputText value="Exact"></h:outputText>
+							</f:facet>
+						<h:outputText size="1" value="#{pari.scoreExact}"  rendered="#{not empty pari.matchs.score}"></h:outputText>
+						</p:column>
+					</p:dataTable>
+				
+					<p:commandButton value="Enregistrement de mes paris"
+						actionListener="#{accueilBean.enregistrementPari()}"></p:commandButton>
+<p:commandButton update=":frm" icon="ui-icon ui-icon-arrowrefresh-1-s" value="#{accueilBean.init()}" ></p:commandButton>
+				</p:panel>
+
+			</h:form>
+			<ui:include src="/classement.xhtml"></ui:include>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="tab">
+			<p:dialog header="Utilisateur"  widgetVar="dlgUtilisateur"  focus="name"> 
+				<h:panelGrid id="add" columns="2" >
+				
+					<h:outputLabel for="name" value="Nom : " />
+					<p:inputText id="name" value="#{utilisateurBean.utilisateur.nom}"/>
+				
+					<h:outputLabel for="surname" value="Prénom : " />
+					<p:inputText id="surname" value="#{utilisateurBean.utilisateur.prenom}"/>
+						
+						
+						<h:outputLabel for="ident" value="Identifiant : " />
+					<p:inputText id="ident" value="#{utilisateurBean.utilisateur.identifiant}">
+						
+					</p:inputText>
+				
+					<h:outputLabel for="email" value="Password : " />
+					<p:inputText id="email" value="#{utilisateurBean.utilisateur.motpasse}">
+						
+					</p:inputText>
+					
+					<h:outputLabel for="email" value="Administrateur: " />
+					<h:selectBooleanCheckbox label="Abilitation"  value="#{utilisateurBean.utilisateur.abilitationAdministrateur}"></h:selectBooleanCheckbox>
+					
+					
+					<h:inputHidden id="id"  value="#{utilisateurBean.utilisateur.id}"></h:inputHidden>
+				
+					<p:commandButton id="addUser" value="Modifier" actionListener="#{utilisateurBean.updateUtilisateur}" rendered="#{utilisateurBean.utilisateur.id > 0}" update=":tab" onclick="PF('dlgUtilisateur').hide()"/>
+				<p:commandButton id="addj" value="Ajouter" actionListener="#{utilisateurBean.addUtilisateur}" rendered="#{utilisateurBean.utilisateur.id eq 0}" update=":tab" onclick="PF('dlgUtilisateur').hide()"/>
+				</h:panelGrid>
+				</p:dialog>
+				<h:outputText style="color: #413632;font-size: 1.4em;" value="Gestion utilisateur"></h:outputText>
+				<p:dataTable id="utilisateurs" var="user" paginatorPosition="bottom"
+					value="#{utilisateurBean.utilisateurList}" draggableColumns="true"
+					paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Identifiant" />
+						</f:facet>
+						<h:outputText value="#{user.id}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nom" />
+						</f:facet>
+						<h:outputText value="#{user.nom}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Prenom" />
+						</f:facet>
+						<h:outputText value="#{user.prenom}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="feuille" />
+						</f:facet>
+						<p:commandButton id="selectButton" update="@none" rendered="#{!user.abilitationAdministrateur}" actionListener="#{utilisateurBean.setUtilisateur(user)}" onclick="PF('file').show()" icon="ui-icon-calculator" title="View"/> 
+						
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Administrateur" />
+						</f:facet>
+						<h:outputText value="#{user.abilitationAdministrateur eq true ? 'oui':'non'}" />
+					</p:column>
+	
+					<p:column style="width:4%">
+						<f:facet name="header"><p:commandButton update=":tab:add"  actionListener="#{utilisateurBean.reset}"
+						icon="ui-icon ui-icon-plusthick" id="showDialogButton" 
+						onclick="PF('dlgUtilisateur').show()" />
+							
+						</f:facet>
+							
+<p:commandButton id="selec" update=":tab:add"  actionListener="#{utilisateurBean.setUtilisateur(user)}" onclick="PF('dlgUtilisateur').show()" icon="ui-icon-search" title="View"> 
+  </p:commandButton><p:commandButton id="selectButt" update=":tab:utilisateurs"  actionListener="#{utilisateurBean.deleteUtilisateur(user)}" icon="ui-icon ui-icon-circle-close" title="View"> 
+  
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+			<p:dialog id="file" header="Import feuille de pronostics BPI"  widgetVar="file">
+ <h:form enctype="multipart/form-data"> 
+						 <h:inputFile id="file" value="#{utilisateurBean.file}"/>
+  <h:commandButton value="Upload" action="#{utilisateurBean.upload}" />
+  </h:form>
+  </p:dialog>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>
